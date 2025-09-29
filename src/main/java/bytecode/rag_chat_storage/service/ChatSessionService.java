@@ -8,8 +8,6 @@ import bytecode.rag_chat_storage.repository.ChatSessionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +32,6 @@ public class ChatSessionService {
     /**
      * Create a new chat session
      */
-    @CacheEvict(value = "chatSessions", key = "#userId")
     public ChatSessionDto createChatSession(String userId, CreateChatSessionRequest request) {
         logger.info("Creating new chat session for user: {}", userId);
         
@@ -48,7 +45,6 @@ public class ChatSessionService {
     /**
      * Get all chat sessions for a user
      */
-    @Cacheable(value = "chatSessions", key = "#userId")
     public List<ChatSessionDto> getAllChatSessions(String userId) {
         logger.info("Retrieving all chat sessions for user: {}", userId);
         
@@ -73,7 +69,6 @@ public class ChatSessionService {
     /**
      * Get a specific chat session by ID
      */
-    @Cacheable(value = "chatSession", key = "#userId + '_' + #sessionId")
     public ChatSessionDto getChatSession(String userId, Long sessionId) {
         logger.info("Retrieving chat session: {} for user: {}", sessionId, userId);
         
@@ -92,7 +87,6 @@ public class ChatSessionService {
     /**
      * Update a chat session name
      */
-    @CacheEvict(value = {"chatSessions", "chatSession"}, key = "#userId")
     public ChatSessionDto updateChatSession(String userId, Long sessionId, UpdateChatSessionRequest request) {
         logger.info("Updating chat session: {} for user: {}", sessionId, userId);
         
@@ -109,7 +103,6 @@ public class ChatSessionService {
     /**
      * Toggle favorite status of a chat session
      */
-    @CacheEvict(value = {"chatSessions", "chatSession"}, key = "#userId")
     public ChatSessionDto toggleFavorite(String userId, Long sessionId) {
         logger.info("Toggling favorite status for chat session: {} for user: {}", sessionId, userId);
         
@@ -127,7 +120,6 @@ public class ChatSessionService {
     /**
      * Delete a chat session and all its messages
      */
-    @CacheEvict(value = {"chatSessions", "chatSession"}, key = "#userId")
     public void deleteChatSession(String userId, Long sessionId) {
         logger.info("Deleting chat session: {} for user: {}", sessionId, userId);
         

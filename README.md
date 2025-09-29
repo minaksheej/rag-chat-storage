@@ -64,6 +64,7 @@ This will start:
 - **Swagger UI**: http://localhost:8080/swagger-ui/index.html
 - **Health Check**: http://localhost:8080/actuator/health
 - **PgAdmin**: http://localhost:8081
+- name: postgres-docker
 
 ### 4. Stop the Services
 

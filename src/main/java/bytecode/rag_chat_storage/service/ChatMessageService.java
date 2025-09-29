@@ -11,8 +11,6 @@ import bytecode.rag_chat_storage.repository.ChatSessionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +35,6 @@ public class ChatMessageService {
     /**
      * Add a new message to a chat session
      */
-    @CacheEvict(value = {"chatSession", "chatMessages"}, key = "#userId + '_' + #sessionId")
     public ChatMessageDto addMessage(String userId, Long sessionId, AddMessageRequest request) {
         logger.info("Adding message to session: {} for user: {}", sessionId, userId);
         
@@ -63,7 +60,6 @@ public class ChatMessageService {
     /**
      * Get all messages for a chat session
      */
-    @Cacheable(value = "chatMessages", key = "#userId + '_' + #sessionId")
     public List<ChatMessageDto> getMessagesBySessionId(String userId, Long sessionId) {
         logger.info("Retrieving messages for session: {} for user: {}", sessionId, userId);
         
@@ -119,7 +115,6 @@ public class ChatMessageService {
     /**
      * Delete a specific message
      */
-    @CacheEvict(value = {"chatSession", "chatMessages"}, key = "#userId + '_' + #sessionId")
     public void deleteMessage(String userId, Long sessionId, Long messageId) {
         logger.info("Deleting message: {} from session: {} for user: {}", messageId, sessionId, userId);
         
@@ -143,7 +138,6 @@ public class ChatMessageService {
     /**
      * Delete all messages for a chat session
      */
-    @CacheEvict(value = {"chatSession", "chatMessages"}, key = "#userId + '_' + #sessionId")
     public void deleteMessagesBySessionId(String userId, Long sessionId) {
         logger.info("Deleting all messages for session: {} for user: {}", sessionId, userId);
         
